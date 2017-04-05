@@ -1,0 +1,60 @@
+body {
+  font-style: $base-font-style;
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-weight: $base-font-weight;
+  color: $base-font-color;
+  background-color: $base-background-color;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+h3,
+h4 {
+  font-family: $heading-font-family;
+}
+
+h3 {
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+h4 {
+  font-size: 1rem;
+  line-height: 1.75;
+  font-weight: $font-weight-bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+p {
+  font-size: 1rem;
+}
+
+a {
+  color: $action-color;
+  text-decoration: none;
+  transition: color $base-duration $base-timing;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+img,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+}
