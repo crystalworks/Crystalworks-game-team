@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import Boot from './states/boot';
 import Preload from './states/preload';
 import Platformer from './states/platformer';
+import Nim from './states/nim';
 
 import config from './config';
 
@@ -19,6 +20,7 @@ class Game extends Phaser.Game {
         this.state.add('Boot', Boot, false)
         this.state.add('Preload', Preload, false)
         this.state.add('Platformer', Platformer, false)
+        this.state.add('Nim', Nim, false)
 
         this.state.start('Boot')
     }
