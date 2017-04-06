@@ -2,9 +2,9 @@ import 'pixi';
 import 'p2';
 import Phaser from 'phaser';
 
-import BootState from './states/boot';
-import PreloadState from './states/preload';
-import GameState from './states/game';
+import Boot from './states/boot';
+import Preload from './states/preload';
+import Platformer from './states/platformer';
 
 import config from './config';
 
@@ -16,11 +16,11 @@ class Game extends Phaser.Game {
 
         super(width, height, Phaser.CANVAS, 'content', null);
 
-        this.state.add('boot', BootState, false)
-        this.state.add('game', PreloadState, false)
-        this.state.add('game', GameState, false)
+        this.state.add('Boot', Boot, false)
+        this.state.add('Preload', Preload, false)
+        this.state.add('Platformer', Platformer, false)
 
-        this.state.start('boot')
+        this.state.start('Boot')
     }
 }
 

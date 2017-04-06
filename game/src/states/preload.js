@@ -1,9 +1,9 @@
-export default class PreloadState extends Phaser.State {
-    preload () {
+export default class Preload extends Phaser.State {
+    preload() {
 
     }
 
-    create () {
+    create() {
         
     }
 }
