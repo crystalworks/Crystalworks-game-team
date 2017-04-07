@@ -54,6 +54,7 @@ export default class Nim extends Phaser.State {
                 }
             })
 
+            this.counter = 0;
             this.currentLine = 0;
             this.hand.loadTexture('hand', 0);
         }   
