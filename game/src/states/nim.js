@@ -1,4 +1,5 @@
-import AI from './nim-ai'
+import AI from './nim-ai';
+
 export default class Nim extends Phaser.State {
     create() {
         this.row_count = 3;
@@ -21,8 +22,8 @@ export default class Nim extends Phaser.State {
             for (let j = 0; j < this.max_coins_in_row_count - i; j += 1) {
                 this.digitCoins[i][j] = 1;
                 this.coins[i][j] = this.add.sprite(
-                    this.coin_x + (this.coin_offset * j), 
-                    this.coin_y + (this.coin_offset * (this.row_count - i)), 
+                    this.coin_x + (this.coin_offset * j),
+                    this.coin_y + (this.coin_offset * (this.row_count - i)),
                     'coin');
                 this.coins[i][j].inputEnabled = true;
                 this.coins[i][j].events.onInputDown.add(this.coinsListener, this);
@@ -64,24 +65,24 @@ export default class Nim extends Phaser.State {
         }
     }
 
-    checkEndOfGame(){
+    checkEndOfGame() {
         let count = 0;
-        this.digitCoins.forEach( (x) => {
-            x.forEach( (y) => {
-                if (y > 0){
-                    count++;
+        this.digitCoins.forEach((x) => {
+            x.forEach((y) => {
+                if (y > 0) {
+                    count += 1;
                 }
-            } )
-        } )
-        switch (count){
-            case 0: 
-                alert('You win!');
-                return true;
-            case 1:
-                alert('You lose');
-                return true;
-            default:
-                let step = AI(this.digitCoins);
+            });
+        });
+        switch (count) {
+        case 0:
+            alert('You win!');
+            return true;
+        case 1:
+            alert('You lose');
+            return true;
+        default:
+            let step = AI(this.digitCoins);
         }
         return false;
     }
