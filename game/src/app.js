@@ -1,6 +1,6 @@
 import 'pixi';
 import 'p2';
-import Phaser from 'phaser';
+import Phaser from 'phaser-ce';
 
 import Boot from './states/boot';
 import Preload from './states/preload';
