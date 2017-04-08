@@ -78,15 +78,10 @@ export default class Nim extends Phaser.State {
     }
 
     checkEndOfGame() {
-        let count = 0;
-        this.digitCoins.forEach((x) => {
-            x.forEach((y) => {
-                if (y > 0) {
-                    count += 1;
-                }
-            });
-        });
-        switch (count) {
+        
+        let countCoinsInRow = this.getCountCoinsInRow();
+        
+        switch (this.getCountLeftCoins(countCoinsInRow)) {
         case 0:
             alert('You win!');
             return true;
@@ -94,17 +89,50 @@ export default class Nim extends Phaser.State {
             alert('You lose');
             return true;
         default:
-            const step = AI(this.digitCoins);
-            count = step.count;
-            this.digitCoins[step.row] = this.digitCoins[step.row].map((x, index) => {
-                if ((count > 0) && (x !== 0)) {
-                    this.coins[step.row][index].visible = false;
-                    count -= 1;
-                    return 0;
-                }
-                return x;
-            });
+            this.stepAI(countCoinsInRow);
         }
         return false;
+    }
+
+    getCountCoinsInRow() {
+        const countCoinsInRow = [];
+        this.digitCoins.forEach((x, index) => {
+            let count = 0;
+            x.forEach((y) => {
+                if (y === 1) {
+                    count += 1;
+                }
+            });
+            countCoinsInRow[index] = count;
+        });
+        return countCoinsInRow;
+    }
+
+    stepAI(countCoinsInRow){
+        const step = AI(countCoinsInRow);
+        let count = step.count;
+        this.digitCoins[step.row] = this.digitCoins[step.row].map((x, index) => {
+            if ((count > 0) && (x !== 0)) {
+                this.coins[step.row][index].visible = false;
+                count -= 1;
+                return 0;
+            }
+            return x;
+        });
+    }
+
+    getCountLeftCoins(countCoinsInRow){
+        let count = 0;
+        const countEmptyRows = countCoinsInRow.reduce((acc, x) => {
+            if (x === 0){
+                acc += 1;
+            }
+            count += x;
+            return acc
+        }, 0);
+        if (this.row_count - countEmptyRows === 1){
+            count = 1;
+        }
+        return count;
     }
 }

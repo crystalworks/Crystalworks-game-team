@@ -1,23 +1,5 @@
 const MAX_COUNT_BIT = 3;
 const ROW_COUNT = 3;
-/**
- * getCountCoinsInRow() returns count of coins in each row
- * @param {array} coins
- * @return {array}
- */
-function getCountCoinsInRow(coins) {
-    const countCoinsInRow = [];
-    coins.forEach((x, index) => {
-        let count = 0;
-        x.forEach((y) => {
-            if (y === 1) {
-                count += 1;
-            }
-        });
-        countCoinsInRow[index] = count;
-    });
-    return countCoinsInRow;
-}
 
 /**
  * getSumBit() execute xor of counts coins in each row
@@ -97,14 +79,10 @@ function getCountCoinsToDelete(max, count) {
 
 /**
  * chooseMove() returns next step (row and count)
- * @param {array} coins
+ * @param {array} countCoinsInRow
  * @return {object}
  */
-export default function chooseMove(coins) {
-    const countCoinsInRow = getCountCoinsInRow(coins);
-    const countCoinsBit = countCoinsInRow.map(x => toBin(x));
-    const sumBits = getSumBit(countCoinsBit);
-    let count = toDec(sumBits);
+export default function chooseMove(countCoinsInRow) {
     const max = countCoinsInRow.reduce((acc, item) => {
         if (acc < item) {
             return item;
@@ -112,6 +90,9 @@ export default function chooseMove(coins) {
         return acc;
     }, 0);
     let row = 0;
+    const countCoinsBit = countCoinsInRow.map(x => toBin(x));
+    const sumBits = getSumBit(countCoinsBit);
+    let count = toDec(sumBits);
     if (count > max) {
         row = countCoinsInRow.indexOf(max);
         count = getCountCoinsToDelete(max, count);
@@ -135,9 +116,12 @@ export default function chooseMove(coins) {
         } else {
             tmp = countCoinsInRow.filter(x => x <= tmp);
             row = countCoinsInRow.indexOf(tmp[0]);
-            count = toBin(count);
-            count = countCoinsBit[row].map((x, index) => x ^ count[index]);
-            count = toDec(count.reverse());
+            let tmpCount = toBin(count);
+            tmpCount = countCoinsBit[row].map((x, index) => x ^ count[index]);
+            tmpCount = toDec(tmpCount.reverse());
+            if (tmpCount !== 0){
+                count = tmpCount;
+            }
         }
     }
     return {
