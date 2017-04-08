@@ -1,6 +1,10 @@
 import AI from './nim-ai';
 
 export default class Nim extends Phaser.State {
+    preload(){
+        this.background = this.add.tileSprite(0, 0, 1000, 600, 'nim-background');
+    }
+
     create() {
         this.row_count = 3;
         this.max_coins_in_row_count = 5;
