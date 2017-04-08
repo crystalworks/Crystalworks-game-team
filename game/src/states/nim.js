@@ -54,14 +54,26 @@ export default class Nim extends Phaser.State {
             const line = this.row_count - ((this.currentLine - this.coin_y) / this.coin_offset);
             this.coins[line].forEach((x, index) => {
                 if (x.key === 'coin-selected') {
-                    x.destroy();
+                    x.loadTexture('coin', 0);
+                    x.visible = false;
                     this.digitCoins[line][index] = 0;
                 }
             });
             this.counter = 0;
             this.currentLine = 0;
             this.hand.loadTexture('hand', 0);
-            this.checkEndOfGame();
+            if (this.checkEndOfGame()) {
+                this.newgame();
+            }
+        }
+    }
+
+    newgame() {
+        for (let i = this.row_count - 1; i > -1; i -= 1) {
+            for (let j = 0; j < this.max_coins_in_row_count - i; j += 1) {
+                this.digitCoins[i][j] = 1;
+                this.coins[i][j].visible = true;
+            }
         }
     }
 
@@ -82,7 +94,16 @@ export default class Nim extends Phaser.State {
             alert('You lose');
             return true;
         default:
-            let step = AI(this.digitCoins);
+            const step = AI(this.digitCoins);
+            count = step.count;
+            this.digitCoins[step.row] = this.digitCoins[step.row].map((x, index) => {
+                if ((count > 0) && (x !== 0)) {
+                    this.coins[step.row][index].visible = false;
+                    count -= 1;
+                    return 0;
+                }
+                return x;
+            });
         }
         return false;
     }
