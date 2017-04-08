@@ -1,3 +1,4 @@
+import AI from './nim-ai'
 export default class Nim extends Phaser.State {
     create() {
         this.row_count = 3;
@@ -8,6 +9,7 @@ export default class Nim extends Phaser.State {
         this.coin_y = 100;
         this.coin_offset = 50;
         this.coins = [];
+        this.digitCoins = [];
         this.currentLine = 0;
         this.counter = 0;
         this.hand = this.add.sprite(this.hand_x, this.hand_y, 'hand');
@@ -15,7 +17,9 @@ export default class Nim extends Phaser.State {
         this.hand.events.onInputDown.add(this.handListener, this);
         for (let i = this.row_count - 1; i > -1; i -= 1) {
             this.coins[i] = [];
+            this.digitCoins[i] = [];
             for (let j = 0; j < this.max_coins_in_row_count - i; j += 1) {
+                this.digitCoins[i][j] = 1;
                 this.coins[i][j] = this.add.sprite(
                     this.coin_x + (this.coin_offset * j), 
                     this.coin_y + (this.coin_offset * (this.row_count - i)), 
@@ -47,14 +51,38 @@ export default class Nim extends Phaser.State {
     handListener() {
         if (this.hand.key === 'hand-active') {
             const line = this.row_count - ((this.currentLine - this.coin_y) / this.coin_offset);
-            this.coins[line].forEach((x) => {
+            this.coins[line].forEach((x, index) => {
                 if (x.key === 'coin-selected') {
                     x.destroy();
+                    this.digitCoins[line][index] = 0;
                 }
             });
             this.counter = 0;
             this.currentLine = 0;
             this.hand.loadTexture('hand', 0);
+            this.checkEndOfGame();
         }
+    }
+
+    checkEndOfGame(){
+        let count = 0;
+        this.digitCoins.forEach( (x) => {
+            x.forEach( (y) => {
+                if (y > 0){
+                    count++;
+                }
+            } )
+        } )
+        switch (count){
+            case 0: 
+                alert('You win!');
+                return true;
+            case 1:
+                alert('You lose');
+                return true;
+            default:
+                let step = AI(this.digitCoins);
+        }
+        return false;
     }
 }
