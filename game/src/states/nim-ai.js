@@ -1,6 +1,4 @@
 const MAX_COUNT_BIT = 3;
-const ROW_COUNT = 3;
-
 /**
  * getSumBit() execute xor of counts coins in each row
  * @param {array} binaryCountsCoins
@@ -8,12 +6,15 @@ const ROW_COUNT = 3;
  */
 function getSumBit(binaryCountsCoins) {
     const sumBits = [];
+
     for (let i = 0; i < MAX_COUNT_BIT; i += 1) {
         sumBits[i] = 0;
+
         for (let j = 0; j < binaryCountsCoins.length; j += 1) {
             sumBits[i] ^= binaryCountsCoins[j][i];
         }
     }
+
     return sumBits.reverse();
 }
 
@@ -23,9 +24,9 @@ function getSumBit(binaryCountsCoins) {
  * @return {number}
  */
 function toDec(binary) {
-    return binary.reduce((acc, x, index) => {
-        const digit = x * (2 ** index);
-        return acc + digit;
+    return binary.reduce((result, bit, index) => {
+        const digit = bit * (2 ** index);
+        return result + digit;
     });
 }
 
@@ -37,44 +38,83 @@ function toDec(binary) {
 function toBin(num) {
     let result = num;
     result = result.toString(2);
+
     if (result.length < MAX_COUNT_BIT) {
         result = '0'.repeat(MAX_COUNT_BIT - result.length).concat(result);
     }
-    return result.split('').map(x => Number(x));
+
+    return result.split('').map(bit => Number(bit));
 }
 
 /**
- * getSumBit() inverse bits of number
- * @param {array} binaryNumber
- * @return {array}
+ * getMaxCountCoinsInRow() looking for the largest row and get count of coins
+ * @param {array} countCoinsInRow
+ * @return {number}
  */
-function inverse(binaryNumber) {
-    return binaryNumber.map(x => Number(!x));
+function getMaxCountCoinsInRow(countCoinsInRow) {
+    return countCoinsInRow.reduce((resultCount, currentCount) => {
+        if (resultCount < currentCount) {
+            return currentCount;
+        }
+
+        return resultCount;
+    }, 0);
+}
+
+function filterCoins(coins, tmp) {
+    return coins.filter(count => (count > 0) && (count <= tmp));
 }
 
 /**
- * getCountCoinsToDelete() execute count of coins to delete from table.
- * 1. inverse max number
- * 2. inverse count number
- * 3. inverse max number XOR inverse count number
- * 4. result of the third step convert to decimal
- * 5. return result as: max - result of the fourth step
- * example:
- * max = 5, count = 7
- * 1. inverseMax = 010
- * 2. count = 000
- * 3. count = 000 xor 010 = 010
- * 4. count = 2
- * 5. return 5 - 2 = 3
- * @param {number} max
+ * selectRow() is a very important function.
+ * This function looking for row, from ai will delete coins.
+ * 1. Find digit, that will the biggest than sumBits. For example:
+ *     a) sumBits = 010 -> biggest number is 011
+ *     b) sumBits = 0101 -> biggest number is 0111
+ * 2. Get all row, which count less or equal coins, than biggest number.
+ *    If rows didn't find, biggest number increment: tmp * 2 + 1. If tmp is 011, result tmp = 111.
+ *    For example:
+ *     a) biggest number is 011 or 3, countCoinsInRow is [1, 4, 5]. Result is [1];
+ *     b) biggest number is 011 or 3, countCoinsInRow is [2, 3, 5]. Result is [2, 3].
+ *     c) biggest number is 011 or 3, countCoinsInRow is [0, 4, 5]. Result is [4, 5].
+ * 3. Get row, which has maximum coins. For example:
+ *     a) result is [1], countCoinsInRow is [1, 4, 5]. So return row 0;
+ *     b) result is [2, 3], countCoinsInRow is [2, 3, 5]. So return row 1.
+ * @param {array} countCoinsInRow
+ * @param {array} sumBits
+ * @return {number}
+ */
+function selectRow(countsInRow, sumBits) {
+    // 1 step
+    let tmp = sumBits.reverse().reduce((resultBinaryDigit, bit) => {
+        if ((resultBinaryDigit.length === 0) && (bit === 0)) {
+            return resultBinaryDigit;
+        }
+
+        return resultBinaryDigit.concat(1);
+    }, []);
+
+    tmp = toDec(tmp);
+    // 2 step
+    let result = filterCoins(countsInRow, tmp);
+
+    while (result.length < 1) {
+        tmp = (tmp * 2) + 1;
+        result = filterCoins(countsInRow, tmp);
+    }
+    // 3 step
+    result = getMaxCountCoinsInRow(result);
+
+    return countsInRow.indexOf(result);
+}
+/**
+ * calculateCountCoinsToDelete() is function, which calculate how many coins to delete
+ * @param {array} countInRow
  * @param {number} count
  * @return {number}
  */
-function getCountCoinsToDelete(max, count) {
-    const inverseMax = inverse(toBin(max));
-    let resultCount = inverse(toBin(count)).map((x, index) => x ^ inverseMax[index]);
-    resultCount = toDec(resultCount.reverse());
-    return max - resultCount;
+function calculateCountCoinsToDelete(countInRow, count) {
+    return countInRow - (countInRow ^ count);
 }
 
 /**
@@ -83,48 +123,23 @@ function getCountCoinsToDelete(max, count) {
  * @return {object}
  */
 export default function chooseMove(countCoinsInRow) {
-    const max = countCoinsInRow.reduce((acc, item) => {
-        if (acc < item) {
-            return item;
-        }
-        return acc;
-    }, 0);
-    let row = 0;
-    const countCoinsBit = countCoinsInRow.map(x => toBin(x));
+    const countCoinsBit = countCoinsInRow.map(count => toBin(count));
     const sumBits = getSumBit(countCoinsBit);
     let count = toDec(sumBits);
-    if (count > max) {
-        row = countCoinsInRow.indexOf(max);
-        count = getCountCoinsToDelete(max, count);
-    } else if (count === 0) {
+    let row = 0;
+
+    if (count === 0) {
         count = 1;
-        row = Math.floor(Math.random(0, ROW_COUNT));
+        do {
+            row = Math.floor(Math.random() * countCoinsInRow.length);
+        } while (countCoinsInRow[row] === 0);
     } else {
-        let tmp = toBin(count).reduce((acc, x) => {
-            if ((acc.length === 0) && (x === 0)) {
-                return acc;
-            }
-            return acc.concat(1);
-        }, []);
-        tmp = toDec(tmp);
-        if (tmp === 1) {
-            row = countCoinsInRow.indexOf(tmp);
-            if (row === -1) {
-                row = countCoinsInRow.indexOf(max);
-            }
-            count = tmp;
-        } else {
-            tmp = countCoinsInRow.filter(x => x <= tmp);
-            row = countCoinsInRow.indexOf(tmp[0]);
-            let tmpCount = toBin(count);
-            tmpCount = countCoinsBit[row].map((x, index) => x ^ count[index]);
-            tmpCount = toDec(tmpCount.reverse());
-            if (tmpCount !== 0){
-                count = tmpCount;
-            }
-        }
+        row = selectRow(countCoinsInRow, sumBits);
+        count = calculateCountCoinsToDelete(countCoinsInRow[row], count);
     }
+    
     return {
         row,
-        count, };
+        count,
+    };
 }

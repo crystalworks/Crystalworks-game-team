@@ -1,7 +1,8 @@
+import Phaser from 'phaser-ce';
 import AI from './nim-ai';
 
 export default class Nim extends Phaser.State {
-    preload(){
+    preload() {
         this.background = this.add.tileSprite(0, 0, 1000, 600, 'nim-background');
     }
 
@@ -20,15 +21,18 @@ export default class Nim extends Phaser.State {
         this.hand = this.add.sprite(this.hand_x, this.hand_y, 'hand');
         this.hand.inputEnabled = true;
         this.hand.events.onInputDown.add(this.handListener, this);
+
         for (let i = this.row_count - 1; i > -1; i -= 1) {
             this.coins[i] = [];
             this.digitCoins[i] = [];
+
             for (let j = 0; j < this.max_coins_in_row_count - i; j += 1) {
                 this.digitCoins[i][j] = 1;
                 this.coins[i][j] = this.add.sprite(
                     this.coin_x + (this.coin_offset * j),
                     this.coin_y + (this.coin_offset * (this.row_count - i)),
-                    'coin');
+                    'coin'
+                );
                 this.coins[i][j].inputEnabled = true;
                 this.coins[i][j].events.onInputDown.add(this.coinsListener, this);
             }
@@ -39,6 +43,7 @@ export default class Nim extends Phaser.State {
         if (this.currentLine === 0 || this.currentLine === args[0].position.y) {
             this.currentLine = args[0].position.y;
             this.hand.loadTexture('hand-active', 0);
+
             if (args[0].key === 'coin') {
                 args[0].loadTexture('coin-selected', 0);
                 this.counter += 1;
@@ -46,6 +51,7 @@ export default class Nim extends Phaser.State {
                 args[0].loadTexture('coin', 0);
                 this.counter -= 1;
             }
+
             if (this.counter === 0) {
                 this.currentLine = 0;
                 this.hand.loadTexture('hand', 0);
@@ -56,16 +62,19 @@ export default class Nim extends Phaser.State {
     handListener() {
         if (this.hand.key === 'hand-active') {
             const line = this.row_count - ((this.currentLine - this.coin_y) / this.coin_offset);
-            this.coins[line].forEach((x, index) => {
-                if (x.key === 'coin-selected') {
-                    x.loadTexture('coin', 0);
-                    x.visible = false;
+
+            this.coins[line].forEach((coin, index) => {
+                if (coin.key === 'coin-selected') {
+                    coin.loadTexture('coin', 0);
+                    coin.visible = false;
                     this.digitCoins[line][index] = 0;
                 }
             });
+
             this.counter = 0;
             this.currentLine = 0;
             this.hand.loadTexture('hand', 0);
+
             if (this.checkEndOfGame()) {
                 this.newgame();
             }
@@ -82,61 +91,75 @@ export default class Nim extends Phaser.State {
     }
 
     checkEndOfGame() {
-        
-        let countCoinsInRow = this.getCountCoinsInRow();
-        
+        const countCoinsInRow = this.getCountCoinsInRow();
+
         switch (this.getCountLeftCoins(countCoinsInRow)) {
-        case 0:
-            alert('You win!');
-            return true;
-        case 1:
-            alert('You lose');
-            return true;
-        default:
-            this.stepAI(countCoinsInRow);
+            case 0: {
+                alert('You win!');
+                return true;
+            }
+            case 1: {
+                alert('You lose');
+                return true;
+            }
+            default: {
+                this.stepAI(countCoinsInRow);
+            }
         }
+
         return false;
     }
 
     getCountCoinsInRow() {
         const countCoinsInRow = [];
-        this.digitCoins.forEach((x, index) => {
+
+        this.digitCoins.forEach((row, index) => {
             let count = 0;
-            x.forEach((y) => {
-                if (y === 1) {
+
+            row.forEach((coin) => {
+                if (coin === 1) {
                     count += 1;
                 }
             });
+
             countCoinsInRow[index] = count;
         });
+
         return countCoinsInRow;
     }
 
-    stepAI(countCoinsInRow){
+    stepAI(countCoinsInRow) {
         const step = AI(countCoinsInRow);
         let count = step.count;
-        this.digitCoins[step.row] = this.digitCoins[step.row].map((x, index) => {
-            if ((count > 0) && (x !== 0)) {
+
+        this.digitCoins[step.row] = this.digitCoins[step.row].map((coin, index) => {
+            if ((count > 0) && (coin !== 0)) {
                 this.coins[step.row][index].visible = false;
                 count -= 1;
+
                 return 0;
             }
-            return x;
+
+            return coin;
         });
     }
 
-    getCountLeftCoins(countCoinsInRow){
+    getCountLeftCoins(countCoinsInRow) {
         let count = 0;
-        const countEmptyRows = countCoinsInRow.reduce((acc, x) => {
-            if (x === 0){
-                acc += 1;
+        const countEmptyRows = countCoinsInRow.reduce((total, countCoins) => {
+            if (countCoins === 0) {
+                total += 1;
             }
-            count += x;
-            return acc
+
+            count += countCoins;
+
+            return total;
         }, 0);
-        if (this.row_count - countEmptyRows === 1){
+
+        if (this.row_count - countEmptyRows === 1) {
             count = 1;
         }
+
         return count;
     }
 }
