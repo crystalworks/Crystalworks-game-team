@@ -17,5 +17,5 @@ export default class Boot extends Phaser.State {
         const levelData = JSON.parse(levelText);
 
         this.state.start('Preload', true, false, levelData);
-    }
+    }   
 }
