@@ -1,0 +1,16 @@
+{
+    "assets": {
+        "map-tiles": { 
+            "type": "image", 
+            "source": "assets/images/tiles-spritesheet.png" 
+        },
+        "platformer-tilemap": { 
+            "type": "tilemap", 
+            "source": "assets/maps/platformer-map.json" 
+        }
+    },
+    "map": {
+        "key": "platformer-tilemap",
+        "tileset": "map-tiles"
+    }
+}
