@@ -23,6 +23,6 @@ export default class Preload extends Phaser.State {
     }
 
     create() {
-        this.state.start('Nim');
+        this.state.start('Menu');
     }
 }

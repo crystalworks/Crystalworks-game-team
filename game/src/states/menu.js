@@ -25,10 +25,10 @@ export default class Menu extends Phaser.State {
     }
 
     gameLoad() {
-        this.state.start('Preload');
+        this.state.start('Platformer');
     }
 
     bonusLoad() {
-        this.state.start('Preload');
+        this.state.start('Nim');
     }
 }
