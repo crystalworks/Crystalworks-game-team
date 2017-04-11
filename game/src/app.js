@@ -7,6 +7,7 @@ import Menu from './states/menu';
 import Preload from './states/preload';
 import Platformer from './states/platformer';
 import Nim from './states/nim';
+import GameOver from './states/game-over.js';
 
 import config from './config';
 
@@ -23,6 +24,7 @@ class Game extends Phaser.Game {
         this.state.add('Preload', Preload, false)
         this.state.add('Platformer', Platformer, false)
         this.state.add('Nim', Nim, false)
+        this.state.add('GameOver', GameOver, false)
       
 
         this.state.start('Boot')
