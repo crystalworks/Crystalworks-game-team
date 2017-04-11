@@ -23,7 +23,7 @@ export default class Nim extends Phaser.State {
     }
 
     create() {
-        const countCoinsInRow = coinsCountPrepare(50);
+        const countCoinsInRow = coinsCountPrepare(6);
         const center = (this.game.width / 2);
         const textConfig = {
             x: center - 100,
@@ -146,6 +146,7 @@ export default class Nim extends Phaser.State {
             case 1: {
                 this.turnText.text = this.texts.lose;
                 isFinished = true;
+                this.state.start('GameOver');
                 break;
             }
             default: {
