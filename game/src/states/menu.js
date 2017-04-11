@@ -25,7 +25,7 @@ export default class Menu extends Phaser.State {
         this.info = game.add.text(
             this.world.centerX - 125,
             210,
-            'collect coins to play with master'
+            'Collect coins to play with master'
         );
         this.info.fontSize = 20;       
         this.info.fill = '#fff';
