@@ -19,12 +19,11 @@ class Game extends Phaser.Game {
         super(width, height, Phaser.CANVAS, 'content', null);
 
         this.state.add('Boot', Boot, false)
-        this.state.add('Menu', Menu, false)
         this.state.add('Preload', Preload, false)
+        this.state.add('Menu', Menu, false)
         this.state.add('Platformer', Platformer, false)
         this.state.add('Nim', Nim, false)
       
-
         this.state.start('Boot')
     }
 }
