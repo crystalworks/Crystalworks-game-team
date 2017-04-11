@@ -1,4 +1,6 @@
 export default class Preload extends Phaser.State {
+    init() {}
+
     preload() {
         this.loaderBg = this.add.sprite(
             this.game.world.centerX, 
@@ -20,6 +22,17 @@ export default class Preload extends Phaser.State {
         this.load.image('hand', 'assets/images/hand-no-active.png');
         this.load.image('hand-active', 'assets/images/hand-active.png');
         this.load.image('nim-background', 'assets/images/nim-background.svg');
+
+        this.load.tilemap(
+            'platformer-tilemap', 
+            'assets/maps/platformer-map.json', 
+            null, 
+            Phaser.Tilemap.TILED_JSON
+        );
+        this.load.image(
+            'tiles-spritesheet', 
+            'assets/images/tiles-spritesheet.png'
+        );
     }
 
     create() {
