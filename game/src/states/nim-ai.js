@@ -1,4 +1,4 @@
-const MAX_COUNT_BIT = 3;
+let MAX_COUNT_BIT;
 /**
  * getSumBit() execute xor of counts coins in each row
  * @param {array} binaryCountsCoins
@@ -117,12 +117,17 @@ function calculateCountCoinsToDelete(countInRow, count) {
     return countInRow - (countInRow ^ count);
 }
 
+function findMaxCountBit(countCoinsInRow) {
+    MAX_COUNT_BIT = toBin(getMaxCountCoinsInRow(countCoinsInRow)).length;
+}
+
 /**
  * chooseMove() returns next step (row and count)
  * @param {array} countCoinsInRow
  * @return {object}
  */
 export default function chooseMove(countCoinsInRow) {
+    findMaxCountBit(countCoinsInRow);
     const countCoinsBit = countCoinsInRow.map(count => toBin(count));
     const sumBits = getSumBit(countCoinsBit);
     let count = toDec(sumBits);
