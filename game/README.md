@@ -1,10 +1,10 @@
-# Game
+# Nimomania
 
 ## Technologies used
 
+- Phaser – HTML5 Game Framework
 - HTML5, CSS3
 - JavaScript
-- Phaser – HTML5 Game Framework
 
 ## Prerequisites
 
