@@ -1,6 +1,7 @@
 function calculteMaxValues(count) {
     let row = 0;
     let max = 0;
+
     if ((count > 63) && (count < 76)) {
         row = 10;
         max = 12;
@@ -34,17 +35,20 @@ function calculteMaxValues(count) {
 }
 
 export default function getCoins(count) {
-    let currentCount = count;
     const data = calculteMaxValues(count);
+    let currentCount = count;
     let result = [];
+
     for (let i = 0; i < data.row; i += 1) {
         if (i === (data.row - 1)) {
             result[i] = currentCount;
         } else {
             let coinCount = Math.floor(Math.random() * (data.max - 2)) + 3;
+            
             if (coinCount > currentCount) {
                 coinCount = Math.floor(Math.random() * currentCount) + 1;
             }
+            
             currentCount -= coinCount;
             result[i] = coinCount;
         }

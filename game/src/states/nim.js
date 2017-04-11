@@ -6,14 +6,14 @@ export default class Nim extends Phaser.State {
     preload() {
         this.background = this.add.tileSprite(0, 0, 1000, 600, 'nim-background');
         this.texts = {
-            playerTurn: ' Player turn ',
+            playerTurn: 'Player turn',
             computerTurn: 'Computer Turn',
-            win: '   You win!  ',
-            lose: '   You lose  ',
+            win: 'You win!',
+            lose: 'You lose',
         };
 
-        this.coin_y = 50;
-        this.coin_offset = 50;
+        this.coinY = 50;
+        this.coinOffset = 50;
         this.isUserStepFinished = false;
         this.test = true;
         this.coins = [];
@@ -26,41 +26,42 @@ export default class Nim extends Phaser.State {
         const countCoinsInRow = coinsCountPrepare(6);
         const center = (this.game.width / 2);
         const textConfig = {
-            x: center - 100,
-            y: 50,
             fontConfig: {
                 fontSize: '32px',
                 fill: '#fee',
                 backgroundColor: '#0004',
                 align: 'center',
-                width: '300px',
             },
         };
         
         this.hand = this.add.sprite(
-            center - 75,
-            this.coin_y + (this.coin_offset * (countCoinsInRow.length)) + 50,
+            center,
+            this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 50,
             'hand'
         );
+        const width = Math.floor(this.hand.width / 2);
+        this.hand.x = center - width;
         this.hand.inputEnabled = true;
         this.hand.events.onInputDown.add(this.handListener, this);
 
         this.turnText = this.add.text(
-            textConfig.x,
-            textConfig.y,
+            0,
+            50,
             this.texts.playerTurn,
             textConfig.fontConfig
         );
+        this.centerText();
 
         for (let i = countCoinsInRow.length - 1; i > -1; i -= 1) {
             this.coins[i] = [];
             this.digitCoins[i] = [];
-            const coinX = center - (this.coin_offset * (countCoinsInRow[i] / 2));
+            const coinX = this.game.world.centerX - (this.coinOffset * (countCoinsInRow[i] / 2));
+            
             for (let j = 0; j < countCoinsInRow[i]; j += 1) {
                 this.digitCoins[i][j] = 1;
                 this.coins[i][j] = this.add.sprite(
-                    coinX + (this.coin_offset * j),
-                    this.coin_y + (this.coin_offset * (countCoinsInRow.length - i)),
+                    coinX + (this.coinOffset * j),
+                    this.coinY + (this.coinOffset * (countCoinsInRow.length - i)),
                     'coin'
                 );
                 this.coins[i][j].inputEnabled = true;
@@ -96,6 +97,7 @@ export default class Nim extends Phaser.State {
             } else {
                 const now = Date.now();
                 while (Date.now() - now < 500) {}
+
                 if (this.checkEndOfGame()) {
                     this.newgame();
                 }
@@ -107,7 +109,7 @@ export default class Nim extends Phaser.State {
     }
     handListener() {
         if (this.hand.key === 'hand-active') {
-            const line = this.coins.length - ((this.currentLine - this.coin_y) / this.coin_offset);
+            const line = this.coins.length - ((this.currentLine - this.coinY) / this.coinOffset);
             this.coins[line].forEach((coin, index) => {
                 if (coin.key === 'coin-selected') {
                     coin.loadTexture('coin', 0);
@@ -118,6 +120,7 @@ export default class Nim extends Phaser.State {
             
             this.hand.loadTexture('hand', 0);
             this.turnText.text = this.texts.computerTurn;
+            this.centerText();
             this.isUserStepFinished = true;
             this.counter = 0;
             this.currentLine = 0;
@@ -144,7 +147,6 @@ export default class Nim extends Phaser.State {
                 break;
             }
             case 1: {
-                this.turnText.text = this.texts.lose;
                 isFinished = true;
                 this.state.start('GameOver');
                 break;
@@ -154,6 +156,7 @@ export default class Nim extends Phaser.State {
                 this.turnText.text = this.texts.playerTurn;
             }
         }
+        this.centerText();
 
         return isFinished;
     }
@@ -208,5 +211,10 @@ export default class Nim extends Phaser.State {
         }
 
         return count;
+    }
+
+    centerText() {
+        const width = this.turnText.width;
+        this.turnText.x = this.game.world.centerX - Math.floor(width / 2);
     }
 }
