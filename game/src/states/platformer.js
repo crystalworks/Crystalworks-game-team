@@ -1,5 +1,5 @@
 import Phaser from 'phaser-ce';
-import Player from './prefabs/player';
+import Player from '../prefabs/player';
 
 export default class Platformer extends Phaser.State {    
     init() {
