@@ -1,13 +1,15 @@
+import Phaser from 'phaser-ce';
+
 export default class Player extends Phaser.Sprite {
     constructor(game, x, y) {
         super(game, x, y, 'player');
 
-        this.animations.add("walking", [0, 1, 2, 1], 6, true);
+        this.animations.add('walking', [0, 1, 2, 1], 6, true);
 
         this.game.physics.arcade.enable(this);
 
-        this.walking_speed = 200;
-        this.jumping_speed = 300;
+        this.walkingSpeed = 200;
+        this.jumpingSpeed = 300;
 
         this.frame = 3;
         
@@ -21,13 +23,13 @@ export default class Player extends Phaser.Sprite {
     update() {
         if (this.cursors.right.isDown && this.body.velocity.x >= 0) {
             // move right
-            this.body.velocity.x = this.walking_speed;
-            this.animations.play("walking");
+            this.body.velocity.x = this.walkingSpeed;
+            this.animations.play('walking');
             this.scale.setTo(-1, 1);
         } else if (this.cursors.left.isDown && this.body.velocity.x <= 0) {
             // move left
-            this.body.velocity.x = -this.walking_speed;
-            this.animations.play("walking");
+            this.body.velocity.x = -this.walkingSpeed;
+            this.animations.play('walking');
             this.scale.setTo(1, 1);
         } else {
             // stop
@@ -38,7 +40,7 @@ export default class Player extends Phaser.Sprite {
 
         // jump only if touching a tile
         if (this.cursors.up.isDown && this.body.blocked.down) {
-            this.body.velocity.y = -this.jumping_speed;
+            this.body.velocity.y = -this.jumpingSpeed;
         }
     }
 }
