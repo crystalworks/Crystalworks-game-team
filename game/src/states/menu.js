@@ -4,6 +4,7 @@ export default class Menu extends Phaser.State {
     preload() {
         this.load.image('start-btn', 'assets/images/start-btn.png');
         this.load.image('bonus-btn', 'assets/images/bonus-btn.png');      
+        this.load.spritesheet('player', 'assets/images/player_spritesheet.png', 28, 30, 5, 1, 1);
     }
 
     create() {
@@ -25,7 +26,7 @@ export default class Menu extends Phaser.State {
     }
 
     gameLoad() {
-        this.state.start('Preload');
+        this.state.start('Platformer'); 
     }
 
     bonusLoad() {
