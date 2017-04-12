@@ -9,7 +9,7 @@ export default class Platformer extends Phaser.State {
     }
 
     create() {
-        this.add.tileSprite(0, 0, 700, 560, 'sky');
+        this.add.tileSprite(0, 0, 1050, 595, 'sky');
         // create map and set tileset
         this.map = this.add.tilemap('platformer-tilemap');
         this.map.addTilesetImage(
@@ -18,6 +18,7 @@ export default class Platformer extends Phaser.State {
         );
         
         this.layer = this.map.createLayer('collision');
+        this.layerBackground = this.map.createLayer('background');
         this.physics.arcade.enable(this.layer);
         this.layer.resizeWorld();
 
