@@ -24,7 +24,7 @@
                  "properties":
                     {
                      "group":"players",
-                     "jumpingSpeed":300,
+                     "jumpingSpeed":550,
                      "texture":"player_spritesheet",
                      "walkingSpeed":200
                     },
