@@ -25,7 +25,6 @@ export default class Nim extends Phaser.State {
 
     create() {
         const coinsCountText = `Coins: ${this.coinsCount}`;
-        const center = this.game.world.centerX;
         const countCoinsInRow = coinsCountPrepare(this.coinsCount);
         const fontStyle = {
             fontSize: '32px',
@@ -125,6 +124,7 @@ export default class Nim extends Phaser.State {
         this.coinsText.text = `Coins: ${this.coinsCount}`;
         const countCoinsInRow = coinsCountPrepare(this.coinsCount);
         this.hand.y = this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 100;
+        
         for (let i = countCoinsInRow.length - 1; i > -1; i -= 1) {
             this.coins[i] = [];
             this.digitCoins[i] = [];
@@ -212,7 +212,7 @@ export default class Nim extends Phaser.State {
             }
             return total;
         }, 0);
-        
+
         if (this.coins.length - countEmptyRows === 1) {
             count = 1;
         }
