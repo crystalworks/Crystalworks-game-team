@@ -10,6 +10,7 @@ export default class Nim extends Phaser.State {
             computerTurn: 'Computer Turn',
             win: 'You win!',
             lose: 'You lose',
+            coins: 'On the game',
         };
 
         this.coinY = 50;
@@ -20,38 +21,41 @@ export default class Nim extends Phaser.State {
         this.digitCoins = [];
         this.currentLine = 0;
         this.counter = 0;
+        this.coinsCount = 6;
     }
 
     create() {
-        const countCoinsInRow = coinsCountPrepare(6);
-        const center = (this.game.width / 2);
-        const textConfig = {
-            fontConfig: {
-                fontSize: '32px',
-                fill: '#fee',
-                backgroundColor: '#0004',
-                align: 'center',
-            },
+        const coinsCountText = `Coins: ${this.coinsCount}`;
+        const center = this.game.world.centerX;
+        const countCoinsInRow = coinsCountPrepare(this.coinsCount);
+        const fontStyle = {
+            fontSize: '32px',
+            fill: '#fee',
+            backgroundColor: '#0004',
+            align: 'center',
         };
-        
         this.hand = this.add.sprite(
             center,
             this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 50,
             'hand'
         );
         const width = Math.floor(this.hand.width / 2);
-        this.hand.x = center - width;
-        this.hand.inputEnabled = true;
-        this.hand.events.onInputDown.add(this.handListener, this);
-
+        this.coinsText = this.add.text(
+            50,
+            50,
+            coinsCountText,
+            fontStyle,
+        );
         this.turnText = this.add.text(
             0,
             50,
             this.texts.playerTurn,
-            textConfig.fontConfig
+            fontStyle
         );
         this.centerText();
-
+        this.hand.x = center - width;
+        this.hand.inputEnabled = true;
+        this.hand.events.onInputDown.add(this.handListener, this);
         for (let i = countCoinsInRow.length - 1; i > -1; i -= 1) {
             this.coins[i] = [];
             this.digitCoins[i] = [];
@@ -117,7 +121,8 @@ export default class Nim extends Phaser.State {
                     this.digitCoins[line][index] = 0;
                 }
             });
-            
+            const count = this.calculateCount();
+            this.coinsText.text = `Coins: ${count}`;
             this.hand.loadTexture('hand', 0);
             this.turnText.text = this.texts.computerTurn;
             this.centerText();
@@ -128,10 +133,26 @@ export default class Nim extends Phaser.State {
     }
 
     newgame() {
-        for (let i = this.coins.length - 1; i > -1; i -= 1) {
-            for (let j = 0; j < this.coins[i].length; j += 1) {
+        this.coins = [];
+        this.digitCoins = [];
+        this.coinsCount *= 2;
+        this.coinsText.text = `Coins: ${this.coinsCount}`;
+        const countCoinsInRow = coinsCountPrepare(this.coinsCount);
+        this.hand.y = this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 50;
+        for (let i = countCoinsInRow.length - 1; i > -1; i -= 1) {
+            this.coins[i] = [];
+            this.digitCoins[i] = [];
+            const coinX = this.game.world.centerX - (this.coinOffset * (countCoinsInRow[i] / 2));
+            
+            for (let j = 0; j < countCoinsInRow[i]; j += 1) {
                 this.digitCoins[i][j] = 1;
-                this.coins[i][j].visible = true;
+                this.coins[i][j] = this.add.sprite(
+                    coinX + (this.coinOffset * j),
+                    this.coinY + (this.coinOffset * (countCoinsInRow.length - i)),
+                    'coin'
+                );
+                this.coins[i][j].inputEnabled = true;
+                this.coins[i][j].events.onInputDown.add(this.coinsListener, this);
             }
         }
     }
@@ -193,24 +214,37 @@ export default class Nim extends Phaser.State {
 
             return coin;
         });
+        count = this.calculateCount();
+        this.coinsText.text = `Coins: ${count}`;
     }
 
     getCountLeftCoins(countCoinsInRow) {
-        let count = 0;
+        let count = this.calculateCount();
         const countEmptyRows = countCoinsInRow.reduce((total, countCoins) => {
             if (countCoins === 0) {
                 total += 1;
             }
-            count += countCoins;
-
             return total;
         }, 0);
-
+        
         if (this.coins.length - countEmptyRows === 1) {
             count = 1;
         }
 
         return count;
+    }
+
+    calculateCount() {
+        return this.digitCoins.reduce((total, row) => {
+            if (row.length > 0) {
+                total += row.reduce((count, coin) => {
+                    count += Number(coin);
+                    return count;
+                }, 0);
+            }
+            total += 0;
+            return total;
+        }, 0);
     }
 
     centerText() {
