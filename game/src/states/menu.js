@@ -9,6 +9,7 @@ export default class Menu extends Phaser.State {
 
         this.startBtn = this.add.button(
             this.world.centerX,
+
             this.world.centerY + 50,
             'start-btn',
             this.gameLoad,
