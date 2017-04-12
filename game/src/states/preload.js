@@ -1,13 +1,15 @@
+import Phaser from 'phaser-ce';
+
 export default class Preload extends Phaser.State {
     preload() {
         this.loaderBg = this.add.sprite(
-            this.game.world.centerX, 
-            this.game.world.centerY, 
+            this.game.world.centerX,
+            this.game.world.centerY,
             'loaderBg'
         );
         this.loaderBar = this.add.sprite(
-            this.game.world.centerX, 
-            this.game.world.centerY, 
+            this.game.world.centerX,
+            this.game.world.centerY,
             'loaderBar'
         );
         this.loaderBg.anchor.setTo(0.5);
@@ -15,8 +17,8 @@ export default class Preload extends Phaser.State {
 
         this.load.setPreloadSprite(this.loaderBar);
 
-        this.load.image("menu-background", "assets/images/sunset.png");
-        this.load.image('start-btn', 'assets/images/start-btn.png'); 
+        this.load.image('menu-background', 'assets/images/sunset.png');
+        this.load.image('start-btn', 'assets/images/start-btn.png');
 
         this.load.spritesheet('player', 'assets/images/player_spritesheet.png', 28, 30, 5, 1, 1);
 
