@@ -1,6 +1,7 @@
-export default class Boot extends Phaser.State {
-    init() { }
+import Phaser from 'phaser-ce';
 
+export default class Boot extends Phaser.State {
+  
     preload() {
         this.game.stage.backgroundColor = '#000';
         this.load.image('loaderBg', 'assets/images/loader-bg.png');
@@ -8,6 +9,6 @@ export default class Boot extends Phaser.State {
     }
 
     create() {
-        this.state.start('Menu');
+        this.state.start('Preload');
     }
 }
