@@ -124,7 +124,7 @@ export default class Nim extends Phaser.State {
         this.coinsCount *= 2;
         this.coinsText.text = `Coins: ${this.coinsCount}`;
         const countCoinsInRow = coinsCountPrepare(this.coinsCount);
-        this.hand.y = this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 50;
+        this.hand.y = this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 100;
         for (let i = countCoinsInRow.length - 1; i > -1; i -= 1) {
             this.coins[i] = [];
             this.digitCoins[i] = [];
