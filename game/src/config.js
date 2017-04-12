@@ -1,5 +1,5 @@
 export default {
-    gameWidth: 800,
-    gameHeight: 600,
+    gameWidth: 700,
+    gameHeight: 560,
     localStorageName: 'gameRollingScopes'
 }
