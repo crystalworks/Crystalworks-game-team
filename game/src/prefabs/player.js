@@ -9,8 +9,7 @@ export default class Player extends Phaser.Sprite {
         this.game.physics.arcade.enable(this);
 
         this.walkingSpeed = 200;
-        this.jumpingSpeed = 300;
-
+        this.jumpingSpeed = 550;
         this.frame = 3;
         
         this.body.gravity.y = 300;
