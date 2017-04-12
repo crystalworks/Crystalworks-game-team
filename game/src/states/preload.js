@@ -41,6 +41,8 @@ export default class Preload extends Phaser.State {
             'tiles-spritesheet', 
             'assets/images/tiles-spritesheet.png'
         );
+
+        this.load.audio('nim-get-coins', 'assets/audio/SoundEffects/nim-get-coins.wav');
     }
 
     create() {

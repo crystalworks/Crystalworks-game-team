@@ -24,7 +24,6 @@ export default class Nim extends Phaser.State {
 
     create() {
         const countCoinsInRow = coinsCountPrepare(6);
-        const center = (this.game.width / 2);
         const textConfig = {
             fontConfig: {
                 fontSize: '32px',
@@ -34,18 +33,20 @@ export default class Nim extends Phaser.State {
             },
         };
         
+        this.getCoinsSound = this.game.add.audio('nim-get-coins');
+        this.getCoinsSound.onStop.add(this.soundStopped, this);
         this.hand = this.add.sprite(
-            center,
-            this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 50,
+            this.game.world.centerX,
+            this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 100,
             'hand'
         );
-        const width = Math.floor(this.hand.width / 2);
-        this.hand.x = center - width;
+        this.hand.anchor.set(0.5);
         this.hand.inputEnabled = true;
         this.hand.events.onInputDown.add(this.handListener, this);
+        this.hand.events.onInputDown.add(this.soundPlay, this);
 
         this.turnText = this.add.text(
-            0,
+            this.game.world.centerX,
             50,
             this.texts.playerTurn,
             textConfig.fontConfig
@@ -90,25 +91,9 @@ export default class Nim extends Phaser.State {
         }
     }
 
-    update() {
-        if (this.isUserStepFinished) {
-            if (this.test) {
-                this.test = false;
-            } else {
-                const now = Date.now();
-                while (Date.now() - now < 500) {}
-
-                if (this.checkEndOfGame()) {
-                    this.newgame();
-                }
-
-                this.isUserStepFinished = false;
-                this.test = true;
-            }
-        }
-    }
     handListener() {
         if (this.hand.key === 'hand-active') {
+            this.isUserStepFinished = true;
             const line = this.coins.length - ((this.currentLine - this.coinY) / this.coinOffset);
             this.coins[line].forEach((coin, index) => {
                 if (coin.key === 'coin-selected') {
@@ -121,7 +106,6 @@ export default class Nim extends Phaser.State {
             this.hand.loadTexture('hand', 0);
             this.turnText.text = this.texts.computerTurn;
             this.centerText();
-            this.isUserStepFinished = true;
             this.counter = 0;
             this.currentLine = 0;
         }
@@ -216,5 +200,23 @@ export default class Nim extends Phaser.State {
     centerText() {
         const width = this.turnText.width;
         this.turnText.x = this.game.world.centerX - Math.floor(width / 2);
+    }
+
+    soundPlay() {
+        if (this.isUserStepFinished) {
+            this.getCoinsSound.play();
+            this.isUserStepFinished = true;
+        }
+    }
+
+    soundStopped() {
+        if (this.isUserStepFinished) {
+            this.isUserStepFinished = false;
+            if (this.checkEndOfGame()) {
+                this.newgame();
+            } else {
+                this.getCoinsSound.play();
+            }
+        }
     }
 }
