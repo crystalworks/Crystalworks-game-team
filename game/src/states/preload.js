@@ -15,6 +15,11 @@ export default class Preload extends Phaser.State {
 
         this.load.setPreloadSprite(this.loaderBar);
 
+        this.load.image("menu-background", "assets/images/sunset.png");
+        this.load.image('start-btn', 'assets/images/start-btn.png'); 
+
+        this.load.spritesheet('player', 'assets/images/player_spritesheet.png', 28, 30, 5, 1, 1);
+
         this.load.image('coin', 'assets/images/coin.png');
         this.load.image('coin-selected', 'assets/images/coin-selected.png');
         this.load.image('hand', 'assets/images/hand-no-active.png');
@@ -23,6 +28,6 @@ export default class Preload extends Phaser.State {
     }
 
     create() {
-        this.state.start('Platformer');
+        this.state.start('Menu');
     }
 }

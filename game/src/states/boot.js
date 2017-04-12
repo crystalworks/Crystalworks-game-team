@@ -8,6 +8,6 @@ export default class Boot extends Phaser.State {
     }
 
     create() {
-        this.state.start('Menu');
+        this.state.start('Preload');
     }
 }
