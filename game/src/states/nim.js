@@ -10,7 +10,6 @@ export default class Nim extends Phaser.State {
             computerTurn: 'Computer Turn',
             win: 'You win!',
             lose: 'You lose',
-            coins: 'On the game',
         };
 
         this.coinY = 50;
