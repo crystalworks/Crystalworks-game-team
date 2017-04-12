@@ -1,13 +1,15 @@
+import Phaser from 'phaser-ce';
+
 export default class Preload extends Phaser.State {
     preload() {
         this.loaderBg = this.add.sprite(
-            this.game.world.centerX, 
-            this.game.world.centerY, 
+            this.game.world.centerX,
+            this.game.world.centerY,
             'loaderBg'
         );
         this.loaderBar = this.add.sprite(
-            this.game.world.centerX, 
-            this.game.world.centerY, 
+            this.game.world.centerX,
+            this.game.world.centerY,
             'loaderBar'
         );
         this.loaderBg.anchor.setTo(0.5);
@@ -20,6 +22,7 @@ export default class Preload extends Phaser.State {
         this.load.image('hand', 'assets/images/hand-no-active.png');
         this.load.image('hand-active', 'assets/images/hand-active.png');
         this.load.image('nim-background', 'assets/images/nim-background.svg');
+        this.load.audio('nim-get-coins', 'assets/audio/SoundEffects/nim-get-coins.wav');
     }
 
     create() {
