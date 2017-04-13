@@ -9,7 +9,10 @@ body {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 6rem;
+  line-height: 1.4;  
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
 }
 
 h2 {

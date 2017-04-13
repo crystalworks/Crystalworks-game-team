@@ -1,10 +1,11 @@
-.keyart{
+.keyart {
     @include flex-block;
+
     justify-content: center;
-    min-height:930px;
+    min-height: 620px;
     background-image: url('/images/sunset.png');
-   &__title{
-       font-size:4rem;
-       color:$white;
+   
+   &__title {
+       color: $white;
    }
 }
