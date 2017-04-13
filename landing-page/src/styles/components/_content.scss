@@ -1,16 +1,34 @@
-.container{
+.container {
     position: relative;
     max-width: 900px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 15px;
-    padding-left: 15px;
+    margin: 0 auto;
+    padding: 0 15px;
 }
-.content{
-    @include flex-block;
-    @include margin-top;
-    @include row;    
-    &__item{
+
+.content {
+    margin: 30px 0;
+
+    &__wrapper {
+        @include flex-block;
+        @include margin-top;
+        @include row;
+    }
+
+    &__title {
+        text-align: center;
+
+        &_small {
+            padding-bottom: 30px;
+            font-size: 2rem;
+        }
+    }
+
+    &__text {
+        font-size: 1.6rem;
+    }
+    
+
+    &__item {
         @include col-6;
     }
 }
