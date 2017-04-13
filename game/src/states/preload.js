@@ -22,7 +22,7 @@ export default class Preload extends Phaser.State {
         this.load.image('menu-background', 'assets/images/sunset.png');
         this.load.image('start-btn', 'assets/images/start-btn.png');
 
-        this.load.spritesheet('player', 'assets/images/player_spritesheet.png', 28, 30, 5, 1, 1);
+        this.load.spritesheet('player', 'assets/images/player-spritesheet.png', 28, 30, 5, 1, 1);
 
         this.load.image('coin', 'assets/images/coin.png');
         this.load.image('coin-selected', 'assets/images/coin-selected.png');
@@ -42,7 +42,7 @@ export default class Preload extends Phaser.State {
             'assets/images/tiles-spritesheet.png'
         );
 
-        this.load.audio('nim-get-coins', 'assets/audio/SoundEffects/nim-get-coins.wav');
+        this.load.audio('nim-get-coins', 'assets/audio/sounds/nim-get-coins.wav');
     }
 
     create() {
