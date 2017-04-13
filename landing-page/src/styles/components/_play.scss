@@ -1,0 +1,48 @@
+.play{
+    @include flex-block_center;
+    @include margin-top;
+    flex-direction: column;
+    &__title{
+        margin-top:10px;
+        margin-bottom:15px;
+    }
+    &__banner{
+        display: inline-block;
+        position: relative;
+        padding:5px;
+        margin-bottom:10px;
+        background: $orange;
+        color:$white;
+        &:before{
+            @include flag;           
+            left: -54px;            
+            border-left-color: transparent;           
+        }
+        &:after{
+           @include flag;    
+            right: -54px;
+            border-right-color: transparent;
+        }
+        &_small{
+            padding: 2px;
+             font-size:1.3rem;             
+        }
+        &_small:before{
+             @include flag_small;  
+             left:-42px;
+        }
+        &_small:after,{
+            @include flag_small;            
+            right:-42px;
+        }
+    }
+    &__logo{
+         @include flex-block_center;
+         flex-direction: column;
+    }
+    &__link{
+        display: inline-block;
+        margin-top:15px;
+        margin-bottom:10px;
+    }
+}

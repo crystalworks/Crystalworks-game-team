@@ -1,0 +1,16 @@
+.container{
+    position: relative;
+    max-width: 900px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.content{
+    @include flex-block;
+    @include margin-top;
+    @include row;    
+    &__item{
+        @include col-6;
+    }
+}

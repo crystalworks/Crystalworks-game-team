@@ -1,3 +1,11 @@
-.copyright {
-  color: blue;
+.page-footer{
+    background: $black;
+    &__copyright{
+       @include flex-block_center;
+       padding:15px;
+       color:$light-gray;    
+    }
+}
+.page-footer-logo{
+ @include flex-block_center;
 }

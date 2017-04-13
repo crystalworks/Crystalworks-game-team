@@ -1,0 +1,8 @@
+.screenshots{
+    @include flex-block;
+    @include margin-top;
+    @include row;    
+    &__item{
+        @include col-6;
+    }
+}

@@ -28,7 +28,7 @@ $heading-line-height: 1.2;
 $base-border-radius: 3px;
 
 // Colors
-$dark-gray: #212121;
+$dark-gray: #424242;
 $anthracite: #212429;
 $charcoal: #464646;
 $medium-gray: #999;
@@ -38,6 +38,7 @@ $black: #000;
 $copyright-black: #17191c; 
 $ghost-white: #f9f9fb;
 $white-smoke: #f7f7f7;
+$orange:#ec8e57;
 
 // Font Colors
 $base-font-color: $dark-gray;
@@ -49,6 +50,7 @@ $base-border: 1px solid $base-border-color;
 
 // Background Colors
 $base-background-color: $white;
+$background-header: $black;
 
 // Animations
 $base-duration: 200ms;

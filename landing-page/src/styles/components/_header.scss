@@ -1,0 +1,16 @@
+.page-header{
+    @include flex-block;
+    min-height:60px;
+    background: $background-header;
+}
+.logo{
+    &__link{
+        @include menu-link;        
+    }
+}
+
+.page-menu{
+    &__link{
+        @include menu-link;
+    }
+}
