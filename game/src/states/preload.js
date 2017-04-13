@@ -22,15 +22,6 @@ export default class Preload extends Phaser.State {
         this.load.image('menu-background', 'assets/images/sunset.png');
         this.load.image('start-btn', 'assets/images/start-btn.png');
 
-        this.load.spritesheet('player', 'assets/images/player-spritesheet.png', 28, 30, 5, 1, 1);
-
-        this.load.image('coin', 'assets/images/coin.png');
-        this.load.image('coin-selected', 'assets/images/coin-selected.png');
-        this.load.image('hand', 'assets/images/hand-no-active.png');
-        this.load.image('hand-active', 'assets/images/hand-active.png');
-        this.load.image('nim-background', 'assets/images/background-wood.png');
-        this.load.image('sky', 'assets/images/sky.png');
-
         this.load.tilemap(
             'platformer-tilemap', 
             'assets/maps/platformer-map.json', 
@@ -41,6 +32,16 @@ export default class Preload extends Phaser.State {
             'tiles-spritesheet', 
             'assets/images/tiles-spritesheet.png'
         );
+
+        this.load.image('sky', 'assets/images/fragile-soft-machine.png');
+        this.load.image('goal', 'assets/images/goal.png');
+        this.load.spritesheet('player', 'assets/images/player-spritesheet.png', 28, 30, 5, 1, 1);
+
+        this.load.image('coin', 'assets/images/coin.png');
+        this.load.image('coin-selected', 'assets/images/coin-selected.png');
+        this.load.image('hand', 'assets/images/hand-no-active.png');
+        this.load.image('hand-active', 'assets/images/hand-active.png');
+        this.load.image('nim-background', 'assets/images/nim-background.svg');
 
         this.load.audio('nim-get-coins', 'assets/audio/sounds/nim-get-coins.wav');
     }
