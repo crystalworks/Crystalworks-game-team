@@ -4,16 +4,15 @@ import coinsCountPrepare from './counts-coins';
 
 export default class Nim extends Phaser.State {
     preload() {
-        this.background = this.add.tileSprite(0, 0, 1000, 600, 'nim-background');
+        this.background = this.add.tileSprite(0, 0, 1050, 595, 'nim-background');
         this.texts = {
-            playerTurn: 'Player turn',
+            playerTurn: 'Your turn',
             computerTurn: 'Computer Turn',
             win: 'You win!',
             lose: 'You lose',
         };
-
-        this.coinY = 50;
-        this.coinOffset = 50;
+        this.coinY = 60;
+        this.coinOffset = 60;
         this.isUserStepFinished = false;
         this.test = true;
         this.coins = [];
@@ -28,8 +27,8 @@ export default class Nim extends Phaser.State {
         const countCoinsInRow = coinsCountPrepare(this.coinsCount);
         const fontStyle = {
             fontSize: '32px',
-            fill: '#fee',
-            backgroundColor: '#0004',
+            fill: '#fff',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
             align: 'center',
         };
         this.coinsText = this.add.text(
@@ -42,7 +41,7 @@ export default class Nim extends Phaser.State {
         this.getCoinsSound.onStop.add(this.soundStopped, this);
         this.hand = this.add.sprite(
             this.game.world.centerX,
-            this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 100,
+            this.coinY + (this.coinOffset * (countCoinsInRow.length)) + 120,
             'hand'
         );
         this.hand.anchor.set(0.5);
@@ -100,6 +99,7 @@ export default class Nim extends Phaser.State {
         if (this.hand.key === 'hand-active') {
             this.isUserStepFinished = true;
             const line = this.coins.length - ((this.currentLine - this.coinY) / this.coinOffset);
+
             this.coins[line].forEach((coin, index) => {
                 if (coin.key === 'coin-selected') {
                     coin.loadTexture('coin', 0);
@@ -107,6 +107,7 @@ export default class Nim extends Phaser.State {
                     this.digitCoins[line][index] = 0;
                 }
             });
+
             const count = this.calculateCount();
             this.coinsText.text = `Coins: ${count}`;
             this.hand.loadTexture('hand', 0);
@@ -146,7 +147,7 @@ export default class Nim extends Phaser.State {
     checkEndOfGame() {
         const countCoinsInRow = this.getCountCoinsInRow();
         let isFinished = false;
-        
+
         switch (this.getCountLeftCoins(countCoinsInRow)) {
             case 0: {
                 this.turnText.text = this.texts.win;
@@ -206,10 +207,12 @@ export default class Nim extends Phaser.State {
 
     getCountLeftCoins(countCoinsInRow) {
         let count = this.calculateCount();
+
         const countEmptyRows = countCoinsInRow.reduce((total, countCoins) => {
             if (countCoins === 0) {
                 total += 1;
             }
+
             return total;
         }, 0);
 
@@ -228,7 +231,9 @@ export default class Nim extends Phaser.State {
                     return count;
                 }, 0);
             }
+
             total += 0;
+
             return total;
         }, 0);
     }
@@ -248,6 +253,7 @@ export default class Nim extends Phaser.State {
     soundStopped() {
         if (this.isUserStepFinished) {
             this.isUserStepFinished = false;
+
             if (this.checkEndOfGame()) {
                 this.newgame();
             } else {
