@@ -34,6 +34,7 @@ export default class Preload extends Phaser.State {
         );
 
         this.load.image('sky', 'assets/images/fragile-soft-machine.png');
+        this.load.image('goal', 'assets/images/goal.png');
         this.load.spritesheet('player', 'assets/images/player-spritesheet.png', 28, 30, 5, 1, 1);
 
         this.load.image('coin', 'assets/images/coin.png');

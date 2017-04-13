@@ -1,5 +1,7 @@
 import Phaser from 'phaser-ce';
 import Player from '../prefabs/player';
+import Goal from '../prefabs/goal';
+
 
 export default class Platformer extends Phaser.State {
     init() {
@@ -23,11 +25,27 @@ export default class Platformer extends Phaser.State {
         this.layer.resizeWorld();
 
         this.player = new Player(this.game, 32, this.world.height - 150);
-        this.add.group().add(this.player);    
+        this.add.group().add(this.player);
+
+        this.goal = new Goal(this.game, 875, this.world.height - 150);
+        this.add.group().add(this.goal);
+
         this.map.setCollisionBetween(0, 10000, true, this.layer);    
     }
     
     update() {
         this.physics.arcade.collide(this.player, this.layer);
+        this.physics.arcade.collide(this.goal, this.layer);
+        this.physics.arcade.overlap(
+            this.goal,
+            this.player,
+            this.reachGoal,
+            null,
+            this
+        );
+    }
+
+    reachGoal() {
+        this.state.start('Nim');
     }
 }
