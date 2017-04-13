@@ -41,9 +41,9 @@
   width: 0;
   height: 0;
   top: 0;   
-  border: 27px solid $orange;
+  border: 27px solid $black;
 }
 
 @mixin flag_small {   
-  border-width: 21px;
+  border-width: 15px;
 }
