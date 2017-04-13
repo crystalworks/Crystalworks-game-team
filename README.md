@@ -15,6 +15,7 @@ A HTML5 JavaScript Game made as a team project at the Rolling Scopes School.
 - Phaser – HTML5 Game Framework
 - HTML5, CSS3
 - JavaScript
+- Webpack
 
 ## Landing Page
 
