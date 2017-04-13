@@ -1,11 +1,23 @@
-.page-footer{
+.page-footer {
     background: $black;
-    &__copyright{
+    
+    &__copyright {
        @include flex-block_center;
-       padding:15px;
-       color:$light-gray;    
+
+       padding: 15px;
+       padding-top: 50px;
+       text-transform: uppercase;
+       color: $white;    
     }
 }
-.page-footer-logo{
- @include flex-block_center;
+
+.page-footer-logo {
+    @include flex-block_center;
+
+    padding: 20px 0;
+    padding-bottom: 80px;
+
+    &__item {
+        padding: 20px;
+    }
 }
